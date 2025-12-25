@@ -1,4 +1,4 @@
-import 'package:pokedex/features/pokemons/data/evolution.dart';
+import 'package:pokedex/features/pokemons/data/models/evolution.dart';
 
 class Pokemon {
   final int id;
