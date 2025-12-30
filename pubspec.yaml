@@ -18,6 +18,7 @@ dependencies:
   flutter_dotenv: ^6.0.0
   flutter_modular: ^6.4.1
   result_dart: ^2.1.1
+  flutter_svg: ^2.2.2
 
 dev_dependencies:
   flutter_test:
@@ -31,6 +32,8 @@ flutter:
 
   assets:
     - pokedex.env
+    - assets/svg/
+    - assets/png/
 
   # fonts:
   #   - family: Schyler
