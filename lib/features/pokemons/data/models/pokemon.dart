@@ -2,7 +2,7 @@ import 'package:pokedex/features/pokemons/data/models/evolution.dart';
 
 class Pokemon {
   final int id;
-  final String num;
+  final String number;
   final String name;
   final String img;
   final List<String> type;
@@ -21,7 +21,7 @@ class Pokemon {
 
   Pokemon({
     required this.id,
-    required this.num,
+    required this.number,
     required this.name,
     required this.img,
     required this.type,
@@ -42,7 +42,7 @@ class Pokemon {
   factory Pokemon.fromJson(Map<String, dynamic> json) {
     return Pokemon(
       id: json['id'],
-      num: json['num'],
+      number: json['num'],
       name: json['name'],
       img: json['img'],
       type: List<String>.from(json['type']),
@@ -51,28 +51,35 @@ class Pokemon {
       candy: json['candy'],
       candyCount: json['candy_count'],
       egg: json['egg'],
-      spawnChance: json['spawn_chance'].toDouble(),
-      avgSpawns: json['avg_spawns'].toDouble(),
+      spawnChance: (json['spawn_chance'] as num).toDouble(),
+      avgSpawns: (json['avg_spawns'] as num).toDouble(),
       spawnTime: json['spawn_time'],
-      multipliers: json['multipliers'] != null
-          ? List<double>.from(json['multipliers'].map((x) => x.toDouble()))
-          : null,
+      multipliers:
+          json['multipliers'] != null
+              ? List<double>.from(
+                json['multipliers'].map((x) => (x as num).toDouble()),
+              )
+              : null,
       weaknesses: List<String>.from(json['weaknesses']),
-      nextEvolution: json['next_evolution'] != null
-          ? List<Evolution>.from(
-          json['next_evolution'].map((x) => Evolution.fromJson(x)))
-          : null,
-      prevEvolution: json['prev_evolution'] != null
-          ? List<Evolution>.from(
-          json['prev_evolution'].map((x) => Evolution.fromJson(x)))
-          : null,
+      nextEvolution:
+          json['next_evolution'] != null
+              ? List<Evolution>.from(
+                json['next_evolution'].map((x) => Evolution.fromJson(x)),
+              )
+              : null,
+      prevEvolution:
+          json['prev_evolution'] != null
+              ? List<Evolution>.from(
+                json['prev_evolution'].map((x) => Evolution.fromJson(x)),
+              )
+              : null,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'num': num,
+      'num': number,
       'name': name,
       'img': img,
       'type': type,

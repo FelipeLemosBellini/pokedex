@@ -15,10 +15,10 @@ class PokemonRemoteDataSourceImpl implements PokemonRemoteDataSource {
   Future<Result<List<Pokemon>>> getPokemons() async {
     try {
       Response response = await client.get("/master/pokedex.json");
-      List data = jsonDecode(response.data['pokemon']);
-
-      final list = data.map((pokemon) => Pokemon.fromJson(pokemon)).toList();
-      return Success(list);
+      Map<String, dynamic> data = jsonDecode(response.data);
+      List<dynamic> list = data['pokemon'];
+      final pokemon = list.map((pokemon) => Pokemon.fromJson(pokemon)).toList();
+      return Success(pokemon);
     } catch (e) {
       return Failure(Exception(e));
     }
