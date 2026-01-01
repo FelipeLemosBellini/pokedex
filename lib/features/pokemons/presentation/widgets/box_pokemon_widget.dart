@@ -18,14 +18,33 @@ class BoxPokemonWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Align(
-            alignment: Alignment.center,
-            child: Image.network(pokemon.img, height: 86),
+          Flexible(
+            child: Align(
+              alignment: Alignment.center,
+              child: Image.network(pokemon.img, height: 86),
+            ),
           ),
           SizedBox(height: 8),
-          Text(pokemon.name),
+          Text(
+            pokemon.name,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              height: 1.333,
+              letterSpacing: 0.36,
+              color: AppColors.textHighlight,
+            ),
+          ),
           SizedBox(height: 4),
-          Text("#" + pokemon.number),
+          Text(
+            "#${pokemon.number}",
+            style: TextStyle(
+              fontSize: 14,
+              height: 1.4,
+              letterSpacing: 0.28,
+              color: AppColors.textHighlight.withOpacity(0.35),
+            ),
+          ),
           Align(
             alignment: Alignment.centerRight,
             child: Icon(Icons.add_circle, size: 16),

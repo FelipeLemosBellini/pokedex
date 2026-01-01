@@ -47,7 +47,7 @@ class _PokemonPageState extends State<PokemonPage> {
                     crossAxisCount: 2,
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 16,
-                    childAspectRatio: 0.857,
+                    childAspectRatio: 1,
                   ),
                   itemBuilder: (_, index) {
                     return BoxPokemonWidget(pokemon: state.pokemons[index]);

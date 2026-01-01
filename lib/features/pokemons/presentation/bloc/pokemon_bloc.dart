@@ -1,9 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex/features/pokemons/data/models/pokemon.dart';
 import 'package:pokedex/features/pokemons/domain/repositories/pokemon_repository_interface.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedex/features/pokemons/data/models/pokemon.dart';
-import 'package:pokedex/features/pokemons/domain/repositories/pokemon_repository_interface.dart';
 
 class PokemonEvent {}
 
