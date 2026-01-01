@@ -19,6 +19,8 @@ dependencies:
   flutter_modular: ^6.4.1
   result_dart: ^2.1.1
   flutter_svg: ^2.2.2
+  shared_preferences: ^2.5.3
+  connectivity_plus: ^7.0.0
 
 dev_dependencies:
   flutter_test:

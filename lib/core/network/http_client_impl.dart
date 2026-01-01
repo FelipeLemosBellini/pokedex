@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:pokedex/core/env/env.dart';
-import 'package:pokedex/core/network/client_interface.dart';
+import 'package:pokedex/core/network/client.dart';
 
-class DioClient implements ClientInterface {
+class HttpClientImpl implements HttpClient {
   final Dio dio;
   final String baseUrl;
 
-  DioClient({required this.dio, required this.baseUrl}) {
+  HttpClientImpl({required this.dio, required this.baseUrl}) {
     dio
       ..options.baseUrl = baseUrl
       ..options.connectTimeout = const Duration(seconds: 60)
