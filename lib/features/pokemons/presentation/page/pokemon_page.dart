@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pokedex/core/theme/app_colors.dart';
+import 'package:pokedex/features/pokemons/data/models/pokemon.dart';
 import 'package:pokedex/features/pokemons/presentation/bloc/pokemon_bloc.dart';
 import 'package:pokedex/features/pokemons/presentation/widgets/app_bar/red_app_bar_pokeball.dart';
 import 'package:pokedex/features/pokemons/presentation/widgets/box_pokemon_widget.dart';
+import 'package:pokedex/features/pokemons/presentation/widgets/input_text_widget.dart';
+import 'package:pokedex/features/pokemons/presentation/widgets/modal/pokemon_details_modal.dart';
 
 class PokemonPage extends StatefulWidget {
   const PokemonPage({super.key});
@@ -15,6 +18,9 @@ class PokemonPage extends StatefulWidget {
 
 class _PokemonPageState extends State<PokemonPage> {
   late PokemonBloc bloc;
+
+  TextEditingController searchController = TextEditingController();
+  FocusNode focusNode = FocusNode();
 
   @override
   void initState() {
@@ -38,6 +44,13 @@ class _PokemonPageState extends State<PokemonPage> {
               children: [
                 RedAppBarPokeball(),
                 SizedBox(height: 40),
+                InputTextWidget(
+                  controller: searchController,
+                  focusNode: focusNode,
+                  onChanged: (String value) {
+                    bloc.add(SearchPokemonsEvent(value: value));
+                  },
+                ),
                 GridView.builder(
                   shrinkWrap: true,
                   padding: EdgeInsets.all(16),
@@ -50,13 +63,21 @@ class _PokemonPageState extends State<PokemonPage> {
                     childAspectRatio: 1,
                   ),
                   itemBuilder: (_, index) {
-                    return BoxPokemonWidget(pokemon: state.pokemons[index]);
+                    return BoxPokemonWidget(
+                      pokemon: state.pokemons[index],
+                      onTap: (Pokemon pokemon) {
+                        // PokemonDetailsModal.open(
+                        //   context: context,
+                        //   pokemon: pokemon,
+                        // );
+                      },
+                    );
                   },
                 ),
               ],
             );
           } else if (state is PokemonLoading)
-            return Center(child: Text("Error"));
+            return Center(child: CircularProgressIndicator(color: Colors.red));
           else if (state is PokemonError)
             return Center(child: Text("Error"));
           else

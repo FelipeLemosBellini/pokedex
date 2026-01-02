@@ -6,6 +6,12 @@ class PokemonEvent {}
 
 class LoadPokemonsEvent extends PokemonEvent {}
 
+class SearchPokemonsEvent extends PokemonEvent {
+  final String value;
+
+  SearchPokemonsEvent({required this.value});
+}
+
 class ErrorEvent extends PokemonEvent {}
 
 class PokemonState {
@@ -32,16 +38,37 @@ class PokemonLoaded extends PokemonState {
   PokemonLoaded({required this.pokemons});
 }
 
+class PokemonSearched extends PokemonState {
+  final List<Pokemon> pokemons;
+
+  PokemonSearched({required this.pokemons});
+}
+
 class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
   final PokemonRepositoryInterface pokemonRepository;
 
   PokemonBloc({required this.pokemonRepository})
     : super(PokemonInitialState()) {
     on<LoadPokemonsEvent>(_onLoadPokemonsEvent);
+    on<SearchPokemonsEvent>(_onSearchPokemonsEvent);
   }
 
   void _onLoadPokemonsEvent(event, emit) async {
+    emit(PokemonLoading());
+    await Future.delayed(Duration(milliseconds: 1000));
     var response = await pokemonRepository.getPokemons();
+    response.fold(
+      (success) {
+        emit(PokemonLoaded(pokemons: success));
+      },
+      (error) {
+        emit(PokemonError(message: error.toString()));
+      },
+    );
+  }
+
+  void _onSearchPokemonsEvent(SearchPokemonsEvent event, emit) async {
+    var response = await pokemonRepository.searchPokemons(value: event.value);
     response.fold(
       (success) {
         emit(PokemonLoaded(pokemons: success));

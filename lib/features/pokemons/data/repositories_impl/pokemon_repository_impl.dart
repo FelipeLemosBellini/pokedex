@@ -39,4 +39,37 @@ class PokemonRepositoryImpl implements PokemonRepositoryInterface {
       return Failure(Exception(e));
     }
   }
+
+  @override
+  Future<Result<List<Pokemon>>> searchPokemons({required String value}) async {
+    try {
+      var response = pokemonLocalDataSource.getCachedPokemons();
+      return await response.fold(
+        (allPokemons) {
+          final query = value.trim().toLowerCase();
+          final int? idQuery = int.tryParse(query);
+
+          List<Pokemon> filtered =
+              allPokemons.where((pokemon) {
+                final nameMatch = pokemon.name.toLowerCase().contains(query);
+
+                final idMatch = idQuery != null && pokemon.id == idQuery;
+
+                final numMatch =
+                    pokemon.number == query ||
+                    pokemon.number == query.padLeft(3, '0');
+
+                return nameMatch || idMatch || numMatch;
+              }).toList();
+
+          return Success(filtered);
+        },
+        (onError) {
+          return Failure(onError);
+        },
+      );
+    } catch (e) {
+      return Failure(Exception(e));
+    }
+  }
 }
