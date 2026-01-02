@@ -1,3 +1,4 @@
+import 'package:pokedex/features/pokemons/data/models/enum/type_of_pokemon.dart';
 import 'package:pokedex/features/pokemons/data/models/evolution.dart';
 
 class Pokemon {
@@ -5,7 +6,7 @@ class Pokemon {
   final String number;
   final String name;
   final String img;
-  final List<String> type;
+  final List<TypeOfPokemon> type;
   final String height;
   final String weight;
   final String candy;
@@ -15,7 +16,7 @@ class Pokemon {
   final double avgSpawns;
   final String spawnTime;
   final List<double>? multipliers;
-  final List<String> weaknesses;
+  final List<TypeOfPokemon> weaknesses;
   final List<Evolution>? nextEvolution;
   final List<Evolution>? prevEvolution;
 
@@ -45,7 +46,7 @@ class Pokemon {
       number: json['num'],
       name: json['name'],
       img: json['img'],
-      type: List<String>.from(json['type']),
+      type: List.from(json['type'].map((x) => TypeOfPokemon.fromString(x))),
       height: json['height'],
       weight: json['weight'],
       candy: json['candy'],
@@ -60,7 +61,9 @@ class Pokemon {
                 json['multipliers'].map((x) => (x as num).toDouble()),
               )
               : null,
-      weaknesses: List<String>.from(json['weaknesses']),
+      weaknesses: List.from(
+        json['weaknesses'].map((x) => TypeOfPokemon.fromString(x)),
+      ),
       nextEvolution:
           json['next_evolution'] != null
               ? List<Evolution>.from(
@@ -82,7 +85,7 @@ class Pokemon {
       'num': number,
       'name': name,
       'img': img,
-      'type': type,
+      'type': type.map((x) => x.name).toList(),
       'height': height,
       'weight': weight,
       'candy': candy,
@@ -92,7 +95,7 @@ class Pokemon {
       'avg_spawns': avgSpawns,
       'spawn_time': spawnTime,
       'multipliers': multipliers,
-      'weaknesses': weaknesses,
+      'weaknesses': weaknesses.map((x) => x.name).toList(),
       'next_evolution': nextEvolution?.map((x) => x.toJson()).toList(),
       'prev_evolution': prevEvolution?.map((x) => x.toJson()).toList(),
     };

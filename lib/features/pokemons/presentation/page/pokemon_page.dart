@@ -66,10 +66,10 @@ class _PokemonPageState extends State<PokemonPage> {
                     return BoxPokemonWidget(
                       pokemon: state.pokemons[index],
                       onTap: (Pokemon pokemon) {
-                        // PokemonDetailsModal.open(
-                        //   context: context,
-                        //   pokemon: pokemon,
-                        // );
+                        PokemonDetailsModal.open(
+                          context: context,
+                          pokemon: pokemon,
+                        );
                       },
                     );
                   },

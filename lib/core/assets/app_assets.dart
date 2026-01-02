@@ -4,4 +4,5 @@ abstract class AppAssets {
 
   //PNG
   static const String koraidon = "assets/png/koraidon.png";
+  static const String fire = "assets/png/fire.png";
 }

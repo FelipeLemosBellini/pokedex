@@ -1,6 +1,7 @@
 import 'package:pokedex/core/connectivity/network_info.dart';
 import 'package:pokedex/features/pokemons/data/data_sources/pokemon_local_data_source.dart';
 import 'package:pokedex/features/pokemons/data/data_sources/pokemon_remote_data_source.dart';
+import 'package:pokedex/features/pokemons/data/models/enum/type_of_pokemon.dart';
 import 'package:pokedex/features/pokemons/data/models/pokemon.dart';
 import 'package:pokedex/features/pokemons/domain/repositories/pokemon_repository_interface.dart';
 import 'package:result_dart/result_dart.dart';
@@ -66,6 +67,40 @@ class PokemonRepositoryImpl implements PokemonRepositoryInterface {
         },
         (onError) {
           return Failure(onError);
+        },
+      );
+    } catch (e) {
+      return Failure(Exception(e));
+    }
+  }
+
+  @override
+  Future<Result<List<Pokemon>>> getRelated({
+    required List<TypeOfPokemon> listOfType,
+  }) async {
+    try {
+      var response = await pokemonLocalDataSource.getCachedPokemons();
+      return response.fold(
+        (allPokemons) {
+          final related =
+              allPokemons
+                  .where(
+                    (pokemon) =>
+                        pokemon.type.any((t) => listOfType.contains(t)),
+                  )
+                  .toList();
+
+          // ordena pelos mais parecidos (mais tipos em comum primeiro)
+          related.sort((a, b) {
+            final aMatches = a.type.where((t) => listOfType.contains(t)).length;
+            final bMatches = b.type.where((t) => listOfType.contains(t)).length;
+            return bMatches.compareTo(aMatches);
+          });
+
+          return Success(related);
+        },
+        (error) {
+          return Failure(error);
         },
       );
     } catch (e) {

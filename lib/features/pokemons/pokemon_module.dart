@@ -10,6 +10,7 @@ import 'package:pokedex/features/pokemons/data/data_sources/pokemon_remote_data_
 import 'package:pokedex/features/pokemons/data/repositories_impl/pokemon_repository_impl.dart';
 import 'package:pokedex/features/pokemons/domain/repositories/pokemon_repository_interface.dart';
 import 'package:pokedex/features/pokemons/presentation/bloc/pokemon_bloc.dart';
+import 'package:pokedex/features/pokemons/presentation/bloc/pokemon_details_cubit.dart';
 import 'package:pokedex/features/pokemons/presentation/page/pokemon_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,6 +39,12 @@ class PokemonModule extends Module {
 
     i.addLazySingleton<PokemonBloc>(
       () => PokemonBloc(pokemonRepository: i<PokemonRepositoryInterface>()),
+    );
+
+    i.addLazySingleton<PokemonDetailsCubit>(
+      () => PokemonDetailsCubit(
+        pokemonRepository: i<PokemonRepositoryInterface>(),
+      ),
     );
   }
 
