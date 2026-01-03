@@ -10,7 +10,6 @@ class ExpandedFilterWidget extends StatelessWidget {
   final Function() onTapAlphabetical;
   final Function() onTapNumeric;
   final Function() clearFilter;
-  final Function() onTapFilter;
   final bool alphabeticalSelected;
   final bool numericSelected;
   final Function(TypeOfPokemon) filterByTypeOfPokemon;
@@ -23,41 +22,37 @@ class ExpandedFilterWidget extends StatelessWidget {
     required this.alphabeticalSelected,
     required this.numericSelected,
     required this.filterByTypeOfPokemon,
-    required this.onTapFilter,
   });
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        GestureDetector(
-          onTap: onTapFilter,
-          child: Container(
-            height: 56,
-            padding: EdgeInsets.only(top: 16, left: 16),
-            decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(16),
-                bottomRight: Radius.circular(16),
-              ),
+        Container(
+          height: 56,
+          padding: EdgeInsets.only(top: 16, left: 16),
+          decoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(16),
+              bottomRight: Radius.circular(16),
             ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SvgPicture.asset(AppAssets.settingsFilter),
-                SizedBox(width: 8),
-                Text(
-                  "Filtros avançados",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    height: 1.5,
-                    letterSpacing: 0.32,
-                  ),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SvgPicture.asset(AppAssets.settingsFilter),
+              SizedBox(width: 8),
+              Text(
+                "Filtros avançados",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  height: 1.5,
+                  letterSpacing: 0.32,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
         Container(

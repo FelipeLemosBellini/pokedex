@@ -42,7 +42,6 @@ class FilterPokemonWidget extends StatelessWidget {
         child:
             showExpandedFilter
                 ? ExpandedFilterWidget(
-                  onTapFilter: onTapFilter,
                   onTapAlphabetical: onTapAlphabetical,
                   onTapNumeric: onTapNumeric,
                   clearFilter: clearFilter,
