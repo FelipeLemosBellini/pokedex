@@ -61,6 +61,47 @@ enum TypeOfPokemon {
     }
   }
 
+  String namePtBr() {
+    switch (this) {
+      case ground:
+        return "Terroso";
+      case fire:
+        return "Fogo";
+      case rock:
+        return "Rocha";
+      case ice:
+        return "Gelo";
+      case flying:
+        return 'Voador';
+      case psychic:
+        return "Psíquico";
+      case poison:
+        return "Venenoso";
+      case grass:
+        return "Grama";
+      case bug:
+        return "Inseto";
+      case electric:
+        return "Elétrico";
+      case normal:
+        return "Comum";
+      case fighting:
+        return "Voador";
+      case water:
+        return "Agua";
+      case steel:
+        return "Aço";
+      case ghost:
+        return "Fantasma";
+      case fairy:
+        return "Fada";
+      case dark:
+        return "Sombrio";
+      case dragon:
+        return "Dragão";
+    }
+  }
+
   static TypeOfPokemon? fromString(String value) {
     try {
       return TypeOfPokemon.values.byName(value.toLowerCase());

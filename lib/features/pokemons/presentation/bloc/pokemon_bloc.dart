@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pokedex/features/pokemons/data/models/enum/type_of_pokemon.dart';
 import 'package:pokedex/features/pokemons/data/models/pokemon.dart';
 import 'package:pokedex/features/pokemons/domain/repositories/pokemon_repository_interface.dart';
 
@@ -18,19 +19,46 @@ class ToggleAlphabeticalFilterEvent extends PokemonEvent {}
 
 class ToggleNumericFilterEvent extends PokemonEvent {}
 
+class FilterByTypeEvent extends PokemonEvent {
+  final TypeOfPokemon? type;
+
+  FilterByTypeEvent({this.type});
+}
+
+class ClearFiltersEvent extends PokemonEvent {}
+
+class ToggleFilterEvent extends PokemonEvent {}
+
 class PokemonState {
   final bool isAlphabetical;
   final bool isAscending;
+  final TypeOfPokemon? selectedType;
+  final bool showExpandedFilter;
 
-  PokemonState({this.isAlphabetical = false, this.isAscending = true});
+  PokemonState({
+    this.isAlphabetical = false,
+    this.isAscending = true,
+    this.selectedType,
+    this.showExpandedFilter = false,
+  });
 }
 
 class PokemonInitialState extends PokemonState {
-  PokemonInitialState({super.isAlphabetical, super.isAscending});
+  PokemonInitialState({
+    super.isAlphabetical,
+    super.isAscending,
+    super.selectedType,
+    super.showExpandedFilter,
+  });
 }
 
 class PokemonLoading extends PokemonState {
-  PokemonLoading({super.isAlphabetical, super.isAscending});
+  PokemonLoading({
+    super.isAlphabetical,
+    super.isAscending,
+    super.selectedType,
+    super.showExpandedFilter,
+  });
 }
 
 class PokemonError extends PokemonState {
@@ -40,6 +68,8 @@ class PokemonError extends PokemonState {
     required this.message,
     super.isAlphabetical,
     super.isAscending,
+    super.selectedType,
+    super.showExpandedFilter,
   });
 }
 
@@ -50,6 +80,8 @@ class PokemonLoaded extends PokemonState {
     required this.pokemons,
     super.isAlphabetical,
     super.isAscending,
+    super.selectedType,
+    super.showExpandedFilter,
   });
 }
 
@@ -60,6 +92,8 @@ class PokemonSearched extends PokemonState {
     required this.pokemons,
     super.isAlphabetical,
     super.isAscending,
+    super.selectedType,
+    super.showExpandedFilter,
   });
 }
 
@@ -74,6 +108,9 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
     on<SearchPokemonsEvent>(_onSearchPokemonsEvent);
     on<ToggleAlphabeticalFilterEvent>(_onToggleAlphabeticalFilterEvent);
     on<ToggleNumericFilterEvent>(_onToggleNumericFilterEvent);
+    on<FilterByTypeEvent>(_onFilterByTypeEvent);
+    on<ClearFiltersEvent>(_onClearFiltersEvent);
+    on<ToggleFilterEvent>(_onToggleFilterEvent);
   }
 
   void _onLoadPokemonsEvent(event, emit) async {
@@ -87,7 +124,13 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
           alphabeticalActive: false,
           numericActive: true,
         );
-        emit(PokemonLoaded(pokemons: filtered));
+        _allPokemons = filtered;
+        emit(
+          PokemonLoaded(
+            pokemons: filtered,
+            showExpandedFilter: state.showExpandedFilter,
+          ),
+        );
       },
       (error) {
         emit(PokemonError(message: error.toString()));
@@ -99,7 +142,12 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
     var response = await pokemonRepository.searchPokemons(value: event.value);
     response.fold(
       (success) {
-        emit(PokemonLoaded(pokemons: success));
+        emit(
+          PokemonLoaded(
+            pokemons: success,
+            showExpandedFilter: state.showExpandedFilter,
+          ),
+        );
       },
       (error) {
         emit(PokemonError(message: error.toString()));
@@ -134,6 +182,7 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
         pokemons: filtered,
         isAlphabetical: newAlphabeticalActive,
         isAscending: newNumericActive,
+        showExpandedFilter: state.showExpandedFilter,
       ),
     );
   }
@@ -166,6 +215,75 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
         pokemons: filtered,
         isAlphabetical: newAlphabeticalActive,
         isAscending: newNumericActive,
+        showExpandedFilter: state.showExpandedFilter,
+      ),
+    );
+  }
+
+  void _onFilterByTypeEvent(
+    FilterByTypeEvent event,
+    Emitter<PokemonState> emit,
+  ) {
+    final type = event.type;
+
+    final filtered = _applyFilters(
+      _allPokemons,
+      alphabeticalActive: state.isAlphabetical,
+      numericActive: state.isAscending,
+      typeFilter: type,
+    );
+
+    emit(
+      PokemonLoaded(
+        pokemons: filtered,
+        isAlphabetical: state.isAlphabetical,
+        isAscending: state.isAscending,
+        selectedType: type,
+        showExpandedFilter: state.showExpandedFilter,
+      ),
+    );
+  }
+
+  void _onClearFiltersEvent(
+    ClearFiltersEvent event,
+    Emitter<PokemonState> emit,
+  ) {
+    final filtered = _applyFilters(
+      _allPokemons,
+      alphabeticalActive: false,
+      numericActive: false,
+      typeFilter: null,
+    );
+
+    emit(
+      PokemonLoaded(
+        pokemons: filtered,
+        isAlphabetical: false,
+        isAscending: false,
+        selectedType: null,
+
+        showExpandedFilter: state.showExpandedFilter,
+      ),
+    );
+  }
+
+  void _onToggleFilterEvent(
+    ToggleFilterEvent event,
+    Emitter<PokemonState> emit,
+  ) {
+    final filtered = _applyFilters(
+      _allPokemons,
+      alphabeticalActive: state.isAlphabetical,
+      numericActive: state.isAscending,
+      typeFilter: state.selectedType,
+    );
+    emit(
+      PokemonLoaded(
+        pokemons: filtered,
+        isAlphabetical: state.isAlphabetical,
+        isAscending: state.isAscending,
+        selectedType: null,
+        showExpandedFilter: !state.showExpandedFilter,
       ),
     );
   }
@@ -174,11 +292,16 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
     List<Pokemon> list, {
     bool? alphabeticalActive,
     bool? numericActive,
+    TypeOfPokemon? typeFilter,
   }) {
     final useAlphabetical = alphabeticalActive ?? state.isAlphabetical;
     final useNumeric = numericActive ?? state.isAscending;
+    final selectedType = typeFilter ?? state.selectedType;
 
     List<Pokemon> sorted = list;
+    if (selectedType != null) {
+      sorted = sorted.where((p) => p.type.contains(selectedType)).toList();
+    }
     if (useAlphabetical) {
       sorted.sort(
         (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),

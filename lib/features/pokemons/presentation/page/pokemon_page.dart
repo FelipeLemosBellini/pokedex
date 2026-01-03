@@ -6,7 +6,7 @@ import 'package:pokedex/features/pokemons/data/models/pokemon.dart';
 import 'package:pokedex/features/pokemons/presentation/bloc/pokemon_bloc.dart';
 import 'package:pokedex/features/pokemons/presentation/widgets/app_bar/red_app_bar_pokeball.dart';
 import 'package:pokedex/features/pokemons/presentation/widgets/box_pokemon_widget.dart';
-import 'package:pokedex/features/pokemons/presentation/widgets/filter_pokemon_widget.dart';
+import 'package:pokedex/features/pokemons/presentation/widgets/filter/filter_pokemon_widget.dart';
 import 'package:pokedex/features/pokemons/presentation/widgets/input_text_widget.dart';
 import 'package:pokedex/features/pokemons/presentation/widgets/modal/pokemon_details_modal.dart';
 
@@ -57,14 +57,23 @@ class _PokemonPageState extends State<PokemonPage> {
                   },
                 ),
                 FilterPokemonWidget(
+                  showExpandedFilter: state.showExpandedFilter,
                   alphabeticalSelected: state.isAlphabetical,
                   numericSelected: state.isAscending,
-                  onTapFilter: () {},
+                  clearFilter: () {
+                    bloc.add(ClearFiltersEvent());
+                  },
+                  onTapFilter: () {
+                    bloc.add(ToggleFilterEvent());
+                  },
                   onTapAlphabetical: () {
                     bloc.add(ToggleAlphabeticalFilterEvent());
                   },
                   onTapNumeric: () {
                     bloc.add(ToggleNumericFilterEvent());
+                  },
+                  filterByTypeOfPokemon: (type) {
+                    bloc.add(FilterByTypeEvent(type: type));
                   },
                 ),
                 GridView.builder(
