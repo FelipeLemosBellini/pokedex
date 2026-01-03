@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:pokedex/core/storage/local_storage.dart';
-import 'package:pokedex/features/pokemons/data/data_sources/pokemon_local_data_source.dart';
+import 'package:pokedex/features/pokemons/data/data_sources/interfaces/pokemon_local_data_source.dart';
 import 'package:pokedex/features/pokemons/data/models/pokemon.dart';
 import 'package:result_dart/result_dart.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class PokemonLocalDataSourceImpl implements PokemonLocalDataSource {
   final LocalStorage prefs;
@@ -13,11 +12,11 @@ class PokemonLocalDataSourceImpl implements PokemonLocalDataSource {
   static const String _cacheKey = 'POKEMONS_CACHE';
 
   @override
-  Future<Result<void>> cachePokemons(List<Pokemon> pokemons) async {
+  Future<Result<Unit>> cachePokemons(List<Pokemon> pokemons) async {
     try {
       final jsonString = jsonEncode(pokemons.map((p) => p.toJson()).toList());
       await prefs.setString(_cacheKey, jsonString);
-      return Success("");
+      return Success(unit);
     } catch (e) {
       return Failure(Exception(e));
     }

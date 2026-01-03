@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:pokedex/core/env/env.dart';
 import 'package:pokedex/core/network/client.dart';
 
 class HttpClientImpl implements HttpClient {

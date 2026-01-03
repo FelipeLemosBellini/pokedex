@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:pokedex/core/network/client.dart';
-import 'package:pokedex/features/pokemons/data/data_sources/pokemon_remote_data_source.dart';
+import 'package:pokedex/features/pokemons/data/data_sources/interfaces/pokemon_remote_data_source.dart';
 import 'package:pokedex/features/pokemons/data/models/pokemon.dart';
 import 'package:result_dart/result_dart.dart';
 

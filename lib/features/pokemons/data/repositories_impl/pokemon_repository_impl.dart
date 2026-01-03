@@ -1,6 +1,6 @@
 import 'package:pokedex/core/connectivity/network_info.dart';
-import 'package:pokedex/features/pokemons/data/data_sources/pokemon_local_data_source.dart';
-import 'package:pokedex/features/pokemons/data/data_sources/pokemon_remote_data_source.dart';
+import 'package:pokedex/features/pokemons/data/data_sources/interfaces/pokemon_local_data_source.dart';
+import 'package:pokedex/features/pokemons/data/data_sources/interfaces/pokemon_remote_data_source.dart';
 import 'package:pokedex/features/pokemons/data/models/enum/type_of_pokemon.dart';
 import 'package:pokedex/features/pokemons/data/models/pokemon.dart';
 import 'package:pokedex/features/pokemons/domain/repositories/pokemon_repository_interface.dart';
