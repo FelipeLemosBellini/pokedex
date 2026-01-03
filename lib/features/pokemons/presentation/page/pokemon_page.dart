@@ -6,6 +6,7 @@ import 'package:pokedex/features/pokemons/data/models/pokemon.dart';
 import 'package:pokedex/features/pokemons/presentation/bloc/pokemon_bloc.dart';
 import 'package:pokedex/features/pokemons/presentation/widgets/app_bar/red_app_bar_pokeball.dart';
 import 'package:pokedex/features/pokemons/presentation/widgets/box_pokemon_widget.dart';
+import 'package:pokedex/features/pokemons/presentation/widgets/filter_pokemon_widget.dart';
 import 'package:pokedex/features/pokemons/presentation/widgets/input_text_widget.dart';
 import 'package:pokedex/features/pokemons/presentation/widgets/modal/pokemon_details_modal.dart';
 
@@ -19,8 +20,8 @@ class PokemonPage extends StatefulWidget {
 class _PokemonPageState extends State<PokemonPage> {
   late PokemonBloc bloc;
 
-  TextEditingController searchController = TextEditingController();
-  FocusNode focusNode = FocusNode();
+  final TextEditingController searchController = TextEditingController();
+  final FocusNode focusNode = FocusNode();
 
   @override
   void initState() {
@@ -47,8 +48,23 @@ class _PokemonPageState extends State<PokemonPage> {
                 InputTextWidget(
                   controller: searchController,
                   focusNode: focusNode,
+                  clearInput: () {
+                    searchController.clear();
+                    bloc.add(SearchPokemonsEvent(value: ""));
+                  },
                   onChanged: (String value) {
                     bloc.add(SearchPokemonsEvent(value: value));
+                  },
+                ),
+                FilterPokemonWidget(
+                  alphabeticalSelected: state.isAlphabetical,
+                  numericSelected: state.isAscending,
+                  onTapFilter: () {},
+                  onTapAlphabetical: () {
+                    bloc.add(ToggleAlphabeticalFilterEvent());
+                  },
+                  onTapNumeric: () {
+                    bloc.add(ToggleNumericFilterEvent());
                   },
                 ),
                 GridView.builder(
