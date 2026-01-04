@@ -9,6 +9,7 @@ class AppWidget extends StatelessWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: Modular.routerConfig,
+      theme: ThemeData(fontFamily: 'Roboto'),
     );
   }
 }
