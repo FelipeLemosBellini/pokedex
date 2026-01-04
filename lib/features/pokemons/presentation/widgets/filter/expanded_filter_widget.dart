@@ -101,10 +101,12 @@ class ExpandedFilterWidget extends StatelessWidget {
                     label: "alfabética (A-Z)",
                   ),
                   SizedBox(width: 12),
-                  FilterSelectableWidget(
-                    onTap: onTapNumeric,
-                    isSelected: numericSelected,
-                    label: "código (crescente)",
+                  Expanded(
+                    child: FilterSelectableWidget(
+                      onTap: onTapNumeric,
+                      isSelected: numericSelected,
+                      label: "código (crescente)",
+                    ),
                   ),
                 ],
               ),

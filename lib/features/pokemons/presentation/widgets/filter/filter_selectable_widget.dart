@@ -54,12 +54,15 @@ class FilterSelectableWidget extends StatelessWidget {
                 ],
               ),
             ),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 16,
-                height: 1.5,
-                color: isSelected ? Colors.white : Colors.black,
+            Flexible(
+              child: Text(
+                label,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 16,
+                  height: 1.5,
+                  color: isSelected ? Colors.white : Colors.black,
+                ),
               ),
             ),
           ],
