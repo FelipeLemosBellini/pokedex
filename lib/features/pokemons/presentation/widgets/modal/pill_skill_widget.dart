@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/features/pokemons/data/models/enum/type_of_pokemon.dart';
+import 'package:pokedex/features/pokemons/domain/models/enum/type_of_pokemon.dart';
 
 class PillSkillWidget extends StatelessWidget {
   final TypeOfPokemon weaknesses;

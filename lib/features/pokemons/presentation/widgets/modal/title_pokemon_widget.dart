@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pokedex/core/theme/app_colors.dart';
-import 'package:pokedex/features/pokemons/data/models/pokemon.dart';
 import 'dart:math' as math;
+
+import 'package:pokedex/features/pokemons/domain/models/pokemon.dart';
 
 class TitlePokemonWidget extends StatelessWidget {
   final Pokemon pokemon;

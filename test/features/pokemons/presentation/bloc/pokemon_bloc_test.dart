@@ -1,15 +1,13 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:pokedex/core/exception/app_exception.dart';
 import 'package:result_dart/result_dart.dart';
 
-import 'package:pokedex/features/pokemons/domain/repositories/pokemon_repository_interface.dart';
 import 'package:pokedex/features/pokemons/presentation/bloc/pokemon_bloc.dart';
 
+import '../../domain/repository/mock_pokemon_repository.dart';
 import 'fixtures/fixture_list_pokemons.dart';
-
-class MockPokemonRepository extends Mock
-    implements PokemonRepositoryInterface {}
 
 void main() {
   late MockPokemonRepository mockPokemonRepository;
@@ -70,11 +68,11 @@ void main() {
     );
 
     blocTest<PokemonBloc, PokemonState>(
-      'LoadPokemonsEvent - erro: emite [PokemonLoading, PokemonError]',
+      'LoadPokemonsEvent - erro: emite [PokemonLoading, PokemonMessage, PokemonLoaded]',
       build: () {
-        when(
-          () => mockPokemonRepository.getPokemons(),
-        ).thenAnswer((_) async => Failure(Exception('erro ao buscar')));
+        when(() => mockPokemonRepository.getPokemons()).thenAnswer(
+          (_) async => Failure(ApiException(message: 'erro ao buscar')),
+        );
         return pokemonBloc;
       },
       act: (bloc) => bloc.add(LoadPokemonsEvent()),
@@ -82,10 +80,15 @@ void main() {
       expect:
           () => [
             isA<PokemonLoading>(),
-            isA<PokemonError>().having(
+            isA<PokemonMessage>().having(
               (s) => s.message,
               'message',
-              contains('erro ao buscar'),
+              contains('Erro ao buscar os pokemons'),
+            ),
+            isA<PokemonLoaded>().having(
+              (s) => s.pokemons.length,
+              'pokemons.length',
+              0,
             ),
           ],
       verify: (_) {
@@ -122,22 +125,25 @@ void main() {
     );
 
     blocTest<PokemonBloc, PokemonState>(
-      'SearchPokemonsEvent - erro: emite PokemonError',
+      'SearchPokemonsEvent - erro: emite Message',
       build: () {
         when(
           () =>
               mockPokemonRepository.searchPokemons(value: any(named: 'value')),
-        ).thenAnswer((_) async => Failure(Exception('erro na busca')));
+        ).thenAnswer(
+          (_) async => Failure(ApiException(message: 'erro na busca')),
+        );
         return pokemonBloc;
       },
       act: (bloc) => bloc.add(SearchPokemonsEvent(value: 'char')),
       expect:
           () => [
-            isA<PokemonError>().having(
+            isA<PokemonMessage>().having(
               (s) => s.message,
               'message',
-              contains('erro na busca'),
+              contains('Erro ao buscar pokemon'),
             ),
+            isA<PokemonLoaded>().having((s) => s.pokemons.length, "length", 0),
           ],
       verify: (_) {
         verify(

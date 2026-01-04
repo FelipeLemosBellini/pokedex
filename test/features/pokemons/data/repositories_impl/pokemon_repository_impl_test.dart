@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:pokedex/core/exception/app_exception.dart';
 import 'package:pokedex/features/pokemons/data/repositories_impl/pokemon_repository_impl.dart';
+import 'package:pokedex/features/pokemons/domain/models/enum/type_of_pokemon.dart';
 import 'package:pokedex/features/pokemons/domain/repositories/pokemon_repository_interface.dart';
 import 'package:result_dart/result_dart.dart';
-
-import 'package:pokedex/features/pokemons/data/models/enum/type_of_pokemon.dart';
 
 import '../../../../core/connectivity/mock_network_info.dart';
 import '../../presentation/bloc/fixtures/fixture_list_pokemons.dart';
@@ -34,7 +34,9 @@ void main() {
       'online, sem cache -> busca do remoto, faz cache e retorna sucesso',
       () async {
         // Arrange
-        when(() => mockLocal.hasCache()).thenAnswer((_) async => false);
+        when(
+          () => mockLocal.hasCache(),
+        ).thenAnswer((_) async => Success(false));
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
         when(
           () => mockRemote.getPokemons(),
@@ -61,7 +63,7 @@ void main() {
     test(
       'online, com cache, mas refresh = true -> força remoto, faz cache e retorna sucesso',
       () async {
-        when(() => mockLocal.hasCache()).thenAnswer((_) async => true);
+        when(() => mockLocal.hasCache()).thenAnswer((_) async => Success(true));
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
         when(
           () => mockRemote.getPokemons(),
@@ -90,20 +92,20 @@ void main() {
     test(
       'online, mas remoto falha -> retorna Failure com o mesmo erro, não chama cache',
       () async {
-        final remoteError = Exception('Erro remoto');
-
-        when(() => mockLocal.hasCache()).thenAnswer((_) async => false);
-        when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
         when(
-          () => mockRemote.getPokemons(),
-        ).thenAnswer((_) async => Failure(remoteError));
+          () => mockLocal.hasCache(),
+        ).thenAnswer((_) async => Success(false));
+        when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+        when(() => mockRemote.getPokemons()).thenAnswer(
+          (_) async =>
+              Failure(ApiException(message: "Erro ao buscar os pokemons")),
+        );
 
         final result = await repository.getPokemons();
 
-        // Assert
         expect(result.isError(), true);
         result.fold((success) => fail('Não deveria ter sucesso'), (error) {
-          expect(error, same(remoteError));
+          expect(error, isA<ApiException>());
         });
 
         verify(() => mockLocal.hasCache()).called(1);
@@ -114,7 +116,7 @@ void main() {
     );
 
     test('offline -> retorna o resultado de getCachedPokemons()', () async {
-      when(() => mockLocal.hasCache()).thenAnswer((_) async => true);
+      when(() => mockLocal.hasCache()).thenAnswer((_) async => Success(true));
       when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => false);
       when(
         () => mockLocal.getCachedPokemons(),
@@ -138,22 +140,20 @@ void main() {
     test(
       'offline e cache falha -> retorna Failure com erro do local',
       () async {
-        final localError = Exception('Erro local');
-
-        when(() => mockLocal.hasCache()).thenAnswer((_) async => true);
+        when(() => mockLocal.hasCache()).thenAnswer((_) async => Success(true));
         when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => false);
         when(
           () => mockLocal.getCachedPokemons(),
-        ).thenAnswer((_) async => Failure(localError));
+        ).thenAnswer((_) async => Failure(CacheException("Erro de cache")));
 
         final result = await repository.getPokemons();
 
         // Assert
         expect(result.isError(), true);
-        result.fold(
-          (success) => fail('Não deveria ter sucesso'),
-          (error) => expect(error, same(localError)),
-        );
+        result.fold((success) => fail('Não deveria ter sucesso'), (error) {
+          expect(error, isA<CacheException>());
+          expect(error.message, "Erro de cache");
+        });
 
         verify(() => mockLocal.hasCache()).called(1);
         verify(() => mockNetworkInfo.isConnected).called(1);
@@ -227,19 +227,17 @@ void main() {
     });
 
     test('erro ao pegar cache -> retorna Failure com erro do local', () async {
-      final localError = Exception('Erro cache search');
-
       when(
         () => mockLocal.getCachedPokemons(),
-      ).thenAnswer((_) async => Failure(localError));
+      ).thenAnswer((_) async => Failure(CacheException("Erro de cache")));
 
       final result = await repository.searchPokemons(value: 'qualquer');
 
       expect(result.isError(), true);
-      result.fold(
-        (success) => fail('Não deveria ter sucesso'),
-        (error) => expect(error, same(localError)),
-      );
+      result.fold((success) => fail('Não deveria ter sucesso'), (error) {
+        expect(error, isA<CacheException>());
+        expect(error.message, "Erro de cache");
+      });
     });
 
     test(
@@ -278,12 +276,6 @@ void main() {
           final names = list.map((p) => p.name).toList();
           expect(names, containsAll(['Charmander']));
 
-          // Todos têm 1 match com types (grass ou fire)
-          // bulbasaur: grass
-          // ivysaur: grass
-          // charmander: fire
-          // Todos com 1 match -> a ordenação entre eles é livre,
-          // mas pelo menos garantimos que pikachu ficou de fora.
           expect(names.contains('Pikachu'), false);
         }, (error) => fail('Não deveria falhar'));
 
@@ -292,21 +284,19 @@ void main() {
     );
 
     test('erro no cache -> retorna Failure com erro do local', () async {
-      final localError = Exception('Erro cache related');
-
       when(
         () => mockLocal.getCachedPokemons(),
-      ).thenAnswer((_) async => Failure(localError));
+      ).thenAnswer((_) async => Failure(CacheException("Erro de cache")));
 
       final result = await repository.getRelated(
         listOfType: [TypeOfPokemon.grass],
       );
 
       expect(result.isError(), true);
-      result.fold(
-        (success) => fail('Não deveria ter sucesso'),
-        (error) => expect(error, same(localError)),
-      );
+      result.fold((success) => fail('Não deveria ter sucesso'), (error) {
+        expect(error, isA<AppException>());
+        expect(error.message, "Erro de cache");
+      });
     });
 
     test(
@@ -314,7 +304,7 @@ void main() {
       () async {
         when(
           () => mockLocal.getCachedPokemons(),
-        ).thenThrow(Exception('Bug related'));
+        ).thenThrow(CacheException('Bug related'));
 
         final result = await repository.getRelated(
           listOfType: [TypeOfPokemon.grass],
@@ -323,7 +313,7 @@ void main() {
         expect(result.isError(), true);
         result.fold(
           (success) => fail('Não deveria ter sucesso'),
-          (error) => expect(error, isA<Exception>()),
+          (error) => expect(error, isA<AppException>()),
         );
       },
     );

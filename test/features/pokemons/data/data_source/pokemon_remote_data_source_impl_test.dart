@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:pokedex/features/pokemons/data/data_sources/interfaces/pokemon_remote_data_source.dart';
 import 'package:pokedex/features/pokemons/data/data_sources/pokemon_remote_data_source_impl.dart';
-import 'package:pokedex/features/pokemons/data/models/pokemon.dart';
+import 'package:pokedex/features/pokemons/domain/models/pokemon.dart';
 
 import '../../../../core/network/mock_http_client.dart';
 import '../../../../helpers/fixture_helper.dart';

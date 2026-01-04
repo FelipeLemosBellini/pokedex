@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:pokedex/features/pokemons/data/models/pokemon.dart';
+import 'package:pokedex/features/pokemons/domain/models/pokemon.dart';
 import 'package:pokedex/features/pokemons/presentation/widgets/box_pokemon_widget.dart';
 import 'package:pokedex/features/pokemons/presentation/widgets/modal/pokemon_details_modal.dart';
 import 'dart:math' as math;

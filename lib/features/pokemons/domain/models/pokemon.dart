@@ -1,5 +1,5 @@
-import 'package:pokedex/features/pokemons/data/models/enum/type_of_pokemon.dart';
-import 'package:pokedex/features/pokemons/data/models/evolution.dart';
+import 'package:pokedex/features/pokemons/domain/models/enum/type_of_pokemon.dart';
+import 'package:pokedex/features/pokemons/domain/models/evolution.dart';
 
 class Pokemon {
   final int id;

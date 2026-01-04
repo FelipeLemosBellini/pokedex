@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pokedex/features/pokemons/data/models/enum/type_of_pokemon.dart';
-import 'package:pokedex/features/pokemons/data/models/pokemon.dart';
+import 'package:pokedex/features/pokemons/domain/models/enum/type_of_pokemon.dart';
+import 'package:pokedex/features/pokemons/domain/models/pokemon.dart';
 import 'package:pokedex/features/pokemons/presentation/widgets/modal/pill_skill_widget.dart';
 import 'package:pokedex/features/pokemons/presentation/widgets/modal/text_skill_widget.dart';
 

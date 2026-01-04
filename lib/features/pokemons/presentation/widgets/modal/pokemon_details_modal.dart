@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:pokedex/features/pokemons/data/models/pokemon.dart';
+import 'package:pokedex/features/pokemons/domain/models/pokemon.dart';
 import 'package:pokedex/features/pokemons/presentation/bloc/pokemon_details_cubit.dart';
 import 'package:pokedex/features/pokemons/presentation/widgets/modal/bars_skills_widget.dart';
 import 'package:pokedex/features/pokemons/presentation/widgets/modal/pokemon_skills_widget.dart';
 import 'package:pokedex/features/pokemons/presentation/widgets/modal/related_pokemons_widget.dart';
 import 'package:pokedex/features/pokemons/presentation/widgets/modal/title_pokemon_widget.dart';
+import 'package:pokedex/features/pokemons/presentation/widgets/snack_bar/custom_snack_bar.dart';
 
 class PokemonDetailsModal extends StatefulWidget {
   final Pokemon pokemon;
@@ -56,11 +57,22 @@ class _PokemonDetailsModalState extends State<PokemonDetailsModal> {
           TitlePokemonWidget(pokemon: widget.pokemon),
           PokemonSkillsWidget(pokemon: widget.pokemon),
           BarsSkillsWidget(),
-          BlocBuilder<PokemonDetailsCubit, PokemonDetailsState>(
-            bloc: cubit,
-            builder: (context, PokemonDetailsState state) {
-              return RelatedPokemonsWidget(related: state.related);
+          BlocListener<PokemonDetailsCubit, PokemonDetailsState>(
+            listener: (context, state) {
+              if (state is PokemonDetailsMessage) {
+                CustomSnackBar.openSnackBar(
+                  context: context,
+                  message: state.message,
+                );
+              }
             },
+            bloc: cubit,
+            child: BlocBuilder<PokemonDetailsCubit, PokemonDetailsState>(
+              bloc: cubit,
+              builder: (context, PokemonDetailsState state) {
+                return RelatedPokemonsWidget(related: state.related);
+              },
+            ),
           ),
         ],
       ),

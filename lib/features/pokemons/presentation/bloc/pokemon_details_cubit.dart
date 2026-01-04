@@ -1,12 +1,18 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedex/features/pokemons/data/models/enum/type_of_pokemon.dart';
-import 'package:pokedex/features/pokemons/data/models/pokemon.dart';
+import 'package:pokedex/features/pokemons/domain/models/enum/type_of_pokemon.dart';
+import 'package:pokedex/features/pokemons/domain/models/pokemon.dart';
 import 'package:pokedex/features/pokemons/domain/repositories/pokemon_repository_interface.dart';
 
 class PokemonDetailsState {
   final List<Pokemon> related;
 
   PokemonDetailsState({required this.related});
+}
+
+class PokemonDetailsMessage extends PokemonDetailsState {
+  final String message;
+
+  PokemonDetailsMessage(this.message, {required super.related});
 }
 
 class PokemonDetailsCubit extends Cubit<PokemonDetailsState> {
@@ -20,6 +26,14 @@ class PokemonDetailsCubit extends Cubit<PokemonDetailsState> {
       listOfType: typesOfPokemons,
     );
     response.fold((relatedPokemons) {
+      if (relatedPokemons.isEmpty) {
+        emit(
+          PokemonDetailsMessage(
+            "Nenhum pokemon relacionado encontrado",
+            related: relatedPokemons,
+          ),
+        );
+      }
       emit(PokemonDetailsState(related: relatedPokemons));
     }, (error) {});
   }

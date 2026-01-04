@@ -1,11 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pokedex/features/pokemons/data/models/enum/type_of_pokemon.dart';
-import 'package:pokedex/features/pokemons/data/models/pokemon.dart';
+import 'package:pokedex/features/pokemons/domain/models/enum/type_of_pokemon.dart';
+import 'package:pokedex/features/pokemons/domain/models/pokemon.dart';
 import 'package:pokedex/features/pokemons/domain/repositories/pokemon_repository_interface.dart';
 
 class PokemonEvent {}
 
-class LoadPokemonsEvent extends PokemonEvent {}
+class LoadPokemonsEvent extends PokemonEvent {
+  final bool refresh;
+
+  LoadPokemonsEvent({this.refresh = false});
+}
 
 class SearchPokemonsEvent extends PokemonEvent {
   final String value;
@@ -61,11 +65,11 @@ class PokemonLoading extends PokemonState {
   });
 }
 
-class PokemonError extends PokemonState {
+class PokemonMessage extends PokemonState {
   final String message;
 
-  PokemonError({
-    required this.message,
+  PokemonMessage(
+    this.message, {
     super.isAlphabetical,
     super.isAscending,
     super.selectedType,
@@ -113,10 +117,10 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
     on<ToggleFilterEvent>(_onToggleFilterEvent);
   }
 
-  void _onLoadPokemonsEvent(event, emit) async {
+  void _onLoadPokemonsEvent(LoadPokemonsEvent event, emit) async {
     emit(PokemonLoading());
     await Future.delayed(Duration(milliseconds: 1000));
-    var response = await pokemonRepository.getPokemons();
+    var response = await pokemonRepository.getPokemons(refresh: event.refresh);
     response.fold(
       (success) {
         final filtered = _applyFilters(
@@ -133,7 +137,8 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
         );
       },
       (error) {
-        emit(PokemonError(message: error.toString()));
+        emit(PokemonMessage("Erro ao buscar os pokemons"));
+        emit(PokemonLoaded(pokemons: []));
       },
     );
   }
@@ -142,6 +147,10 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
     var response = await pokemonRepository.searchPokemons(value: event.value);
     response.fold(
       (success) {
+        if (success.isEmpty) {
+          emit(PokemonMessage("Nenhum pokemon encontrado"));
+          emit(PokemonLoaded(pokemons: []));
+        }
         emit(
           PokemonLoaded(
             pokemons: success,
@@ -150,7 +159,8 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
         );
       },
       (error) {
-        emit(PokemonError(message: error.toString()));
+        emit(PokemonMessage("Erro ao buscar pokemon"));
+        emit(PokemonLoaded(pokemons: []));
       },
     );
   }

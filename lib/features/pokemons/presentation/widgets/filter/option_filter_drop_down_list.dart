@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/core/theme/app_colors.dart';
-import 'package:pokedex/features/pokemons/data/models/enum/type_of_pokemon.dart';
+import 'package:pokedex/features/pokemons/domain/models/enum/type_of_pokemon.dart';
 
 class OptionFilterDropDownList extends StatefulWidget {
   final Function(TypeOfPokemon) filterByTypeOfPokemon;

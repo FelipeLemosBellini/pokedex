@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokedex/core/theme/app_colors.dart';
-import 'package:pokedex/features/pokemons/data/models/pokemon.dart';
+import 'package:pokedex/features/pokemons/domain/models/pokemon.dart';
 
 class BoxPokemonWidget extends StatelessWidget {
   final Pokemon pokemon;

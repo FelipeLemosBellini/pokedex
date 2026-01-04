@@ -1,5 +1,7 @@
-import 'package:pokedex/features/pokemons/data/models/enum/type_of_pokemon.dart';
-import 'package:pokedex/features/pokemons/data/models/pokemon.dart';
+
+
+import 'package:pokedex/features/pokemons/domain/models/enum/type_of_pokemon.dart';
+import 'package:pokedex/features/pokemons/domain/models/pokemon.dart';
 
 final Pokemon bulbasaur = Pokemon(
   id: 1,
