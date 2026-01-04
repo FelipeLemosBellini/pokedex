@@ -99,11 +99,9 @@ Conforme dito no 3.4, o BLoC um pacote recomendado, separa muito bem a lógica d
 
 
 
-Falta implementar
-logic retry
-snackbar
+### Falta implementar:
+
 paginação dos itens
 
 google analytics
 criar um diagrama
-criar gifs da aplicação
