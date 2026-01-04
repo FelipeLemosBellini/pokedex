@@ -28,7 +28,7 @@ class FilterPokemonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16, top: 28, bottom: 24, right: 16),
+      padding: const EdgeInsets.only(left: 16, top: 28, bottom: 24),
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 400),
         switchInCurve: Curves.easeOut,
