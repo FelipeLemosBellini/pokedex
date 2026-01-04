@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:pokedex/app_module.dart';
@@ -11,7 +12,7 @@ void main() async {
   FlutterNativeSplash.preserve(
     widgetsBinding: WidgetsFlutterBinding.ensureInitialized(),
   );
-  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await Firebase.initializeApp();
   await Env.start();
   final sharedPreferences = await SharedPreferences.getInstance();
 
