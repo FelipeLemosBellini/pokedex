@@ -5,6 +5,9 @@
 *  O App Pokedex é um explorador de pokemons para os entusiastas desse universo, ele conta com filtros 
 e buscas para encontrar o seu pokemon favorito.
 
+#### Vídeo do app 
+https://drive.google.com/file/d/10D9Em32LNbHE7Jod44365ZSFKfvOOlt5/view?usp=sharing
+
 #### Implementações
 * Mecanismo de busca por nome ou id do pokemon
 * Filtragem por tipo de pokemon
@@ -91,13 +94,30 @@ flutter test
 ### 6. Justificativa de Pacotes
 
 #### Modular
-Além de ser um pacote recomendado ele foi extremamente útil já que ele faz o gerenciamento das dependencias e rotas do app, além disso caso o projeto crescesse ele seria um ótimo gerenciador pois consegue segregar em módulos, separando contextos, facilitando trabalho de times maiores simultanemanete.
+Além de ser um pacote recomendado ele foi extremamente útil já que ele faz o gerenciamento das dependencias e rotas do app, além disso caso o projeto crescesse ele seria um ótimo gerenciador pois consegue segregar em módulos, separando contextos, facilitando trabalho de times maiores simultanemanete e injetando modulos somente quando necessário ajudando no desempenho.
 
 #### Bloc 
 Conforme dito no 3.4, o BLoC um pacote recomendado, separa muito bem a lógica da UI, responsabilidades e contextos bem definidas graças aos eventos. 
 
+#### Dio
+Foi Escolhido o Dio como pacote para realizar as solicitações REST pois nos requisítos era necessário implementar Interceptors, o pacote é bem robusto para isso e é mais completo do que outros como o http.
 
+#### flutter_dotenv
+Mesmo se tratando de uma API open source **"eu quis trazer o pacote para armazenar a base url que o projeto consome pois acredito muito na proposta de segurança de esconder as URLs da aplicação"**, mas resolvi subi o arquivo no commit pela praticidade de quem for testar meu projeto.
 
+#### result_dart
+Sou muito adepto em trazer esses auxiliadores de tratamento de resposta pois são muito úteis para entender o erro, facilita a implementação da camada de apresentação saber oque deve ser feito para o usuário, fora que os tests unitários também ficam bem organizados também.
+
+#### flutter_svg
+O design possui alguns SVGs e esse pacote foi prático de apresenta-los.
+
+#### shared_preferences
+Foi desenvolvido a capacidade de armazenar localmente os pokemons e o pacote é prático de configurar. Foi descartado usar pacotes de banco de dados relacional por se tratar de poucos tipos de dados, se fosse mais dados diferentes talvez usaria algum banco de dados local.
+
+#### connectivity_plus
+Para decidir qual datasource iria trazer os dados precisei usar um pacote que me informasse o status de conectividade e esse me serviu bem. 
+
+#### 
 
 ### Falta implementar:
 
