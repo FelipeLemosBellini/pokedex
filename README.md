@@ -47,6 +47,8 @@ apesar de ser um projeto pequeno, a forma que o projeto está apresentado busca 
 flexibilidade para sua continuidade uma vez que a filosofia baseada vem de principios básicos como inversão de dependencia, separação de responsabilidades e outros.
 
 A estrutura atual do app conta com 3 camadas, (**Data**, **Domain** e **Presentation**)
+<img width="1240" height="849" alt="UI (2)" src="https://github.com/user-attachments/assets/85279422-332d-4fc9-9fbf-465abbe9a64e" />
+<img width="667" height="245" alt="UI (1)" src="https://github.com/user-attachments/assets/fc934266-f018-4c29-840b-a8d0647939f1" />
 
 ### 3.1. Data
 
