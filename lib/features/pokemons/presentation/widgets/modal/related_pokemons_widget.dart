@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:pokedex/core/analytics/analytics_bridge.dart';
 import 'package:pokedex/features/pokemons/domain/models/pokemon.dart';
 import 'package:pokedex/features/pokemons/presentation/widgets/box_pokemon_widget.dart';
 import 'package:pokedex/features/pokemons/presentation/widgets/modal/pokemon_details_modal.dart';
@@ -38,6 +39,10 @@ class RelatedPokemonsWidget extends StatelessWidget {
                   child: BoxPokemonWidget(
                     pokemon: related[index],
                     onTap: (Pokemon pokemon) {
+                      AnalyticsBridge.logEvent(
+                        name: AnalyticsLogEvents.pokemonMostSelected,
+                        params: {"pokemon": pokemon.toJson()},
+                      );
                       Modular.to.pop();
                       PokemonDetailsModal.open(
                         context: context,

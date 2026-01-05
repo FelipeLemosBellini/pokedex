@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:pokedex/core/analytics/analytics_bridge.dart';
 import 'package:pokedex/core/theme/app_colors.dart';
 import 'package:pokedex/features/pokemons/domain/models/enum/type_of_pokemon.dart';
 import 'package:pokedex/features/pokemons/domain/models/pokemon.dart';
@@ -108,6 +109,10 @@ class _PokemonPageState extends State<PokemonPage> {
                         return BoxPokemonWidget(
                           pokemon: state.pokemons[index],
                           onTap: (Pokemon pokemon) {
+                            AnalyticsBridge.logEvent(
+                              name: AnalyticsLogEvents.pokemonMostSelected,
+                              params: {"pokemon": pokemon.toJson()},
+                            );
                             PokemonDetailsModal.open(
                               context: context,
                               pokemon: pokemon,
