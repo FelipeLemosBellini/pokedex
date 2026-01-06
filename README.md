@@ -8,7 +8,14 @@ e buscas para encontrar o seu pokemon favorito.
 #### Vídeo do app 
 https://drive.google.com/file/d/10D9Em32LNbHE7Jod44365ZSFKfvOOlt5/view?usp=sharing
 
+<img width="240" height="522" alt="simulator_screenshot_609932C4-FBB9-4E9D-9417-27C84A5DFB21" src="https://github.com/user-attachments/assets/95c71991-89e1-4ee2-86ec-18d5d6732b4d" />
+<img width="240" height="522" alt="simulator_screenshot_609932C4-FBB9-4E9D-9417-27C84A5DFB21" src="https://github.com/user-attachments/assets/de6a59e0-cadb-4c38-bb93-6a6a9ad30188" />
+<img width="240" height="522" alt="simulator_screenshot_D2FA9AE5-6E3A-44C5-A9D3-692AE4921CE1" src="https://github.com/user-attachments/assets/457a4362-fa62-47ef-9cbb-b10b91f1d56a" />
+<img width="240" height="522" alt="simulator_screenshot_2D3C89B0-7CFB-42BB-8D8B-C476D3017365" src="https://github.com/user-attachments/assets/9cd38c00-dabc-4daa-946c-9d54f937718a" />
+<img width="240" height="522" alt="simulator_screenshot_F56E2B75-BD5B-47E0-BA43-C3279CF55FE3" src="https://github.com/user-attachments/assets/1d350612-e47b-4f4d-bfac-13e1eb70ebdf" />
+
 #### Implementações
+
 * Mecanismo de busca por nome ou id do pokemon
 * Filtragem por tipo de pokemon
 * Ordenação por ordem alfabética ou id(crescente)
@@ -82,9 +89,7 @@ Foi Utilizado o BLoC como gerenciador de estado, além de estar entre os pacotes
 ## Instalação
 1. Clone o repositório
 2. Execute `flutter pub get`
-
-[//]: # (3. Configure [API keys, etc.])
-4. Execute `flutter run`
+3. Execute `flutter run`
 
 ### 5. Comandos de Execução
 #### Executar aplicação
@@ -96,7 +101,7 @@ flutter test
 ### 6. Justificativa de Pacotes
 
 #### Modular
-Além de ser um pacote recomendado ele foi extremamente útil já que ele faz o gerenciamento das dependencias e rotas do app, além disso caso o projeto crescesse ele seria um ótimo gerenciador pois consegue segregar em módulos, separando contextos, facilitando trabalho de times maiores simultanemanete e injetando modulos somente quando necessário ajudando no desempenho.
+Além de ser um pacote recomendado ele foi extremamente útil já que ele faz o gerenciamento das dependencias e rotas do app, além disso caso o projeto crescesse ele seria um ótimo gerenciador pois consegue segregar em módulos, separando contextos, facilitando trabalho de times maiores simultanemanete e injetando modulos somente quando necessário ajudando no desempenho. Mas poderia ter usado get_it e go_route no lugar.
 
 #### Bloc 
 Conforme dito no 3.4, o BLoC um pacote recomendado, separa muito bem a lógica da UI, responsabilidades e contextos bem definidas graças aos eventos. 
@@ -119,11 +124,20 @@ Foi desenvolvido a capacidade de armazenar localmente os pokemons e o pacote é 
 #### connectivity_plus
 Para decidir qual datasource iria trazer os dados precisei usar um pacote que me informasse o status de conectividade e esse me serviu bem. 
 
-#### 
+#### flutter_native_splash
+Esse pacote foi usado para gerar a slash screen do app de forma mais rápida.
 
-### Falta implementar:
+### 7. Estratégia de Testes
 
-paginação dos itens
+Para os testes foi utilizado os pacotes mocktail e bloc_test.
 
-google analytics
-criar um diagrama
+Durante os testes foi pretendido testar todas as camadas ditas na arquitetura do projeto, a ideia organizacional foi espelhar as pastas do projeto para pastas e arquivos dos testes para facilitar a manutenção, além disso os testes por exemplo foram realizado para cobrir o Success e Failure pois foi usado o result_dart para melhorar o tratamento de dados de uma camada para a outra, no Failure foi checado principalmente a natureza do erro e a mensagem, já no Success houveram casos de sucesso na resposta mas não era o caso perfeito e com o caso que tudo estava correto, dados esperados nos fixtures(stubs), tipagem... 
+
+Para testar a camada de apresentação foi usado o bloc_test pois precisa de uma simulação de dispare de eventos e acredito que com outras bibliotecas seria bem mais dificil de fazer isso, por sua vez eu busquei testar a tipagem e estados, quais foram chamados e como ficou o estado final.
+
+### 8. Features Bônus
+Foi implementado o analytics do firebase dos nativos e através de uma bridge(popular MethodChannel) é invocado em uma classe de serviço bem genérica para possíveis criações de eventos, sendo necessário somente um nome e um Map para passar os dados(essa parte eu não desenvolvi bem no painel do firebase). Foi criado dois eventos:
+- Abrir tela principal
+- Escolher pokemon
+
+A ideia é rastrear o uso e os pokemons mais consultados.  
