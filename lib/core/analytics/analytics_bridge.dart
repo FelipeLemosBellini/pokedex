@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 
 abstract class AnalyticsLogEvents {
   static const String pokemonMostSelected = "pokemonMostSelected";
+  static const String startApp = "startApp";
 }
 
 abstract class AnalyticsBridge {

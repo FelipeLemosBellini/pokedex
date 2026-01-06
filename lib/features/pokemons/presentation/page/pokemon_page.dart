@@ -32,6 +32,8 @@ class _PokemonPageState extends State<PokemonPage> {
     super.initState();
     bloc = Modular.get<PokemonBloc>();
     bloc.add(LoadPokemonsEvent());
+
+    AnalyticsBridge.logEvent(name: AnalyticsLogEvents.startApp);
   }
 
   @override
