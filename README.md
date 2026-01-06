@@ -8,7 +8,14 @@ e buscas para encontrar o seu pokemon favorito.
 #### Vídeo do app 
 https://drive.google.com/file/d/10D9Em32LNbHE7Jod44365ZSFKfvOOlt5/view?usp=sharing
 
+<img width="240" height="522" alt="simulator_screenshot_609932C4-FBB9-4E9D-9417-27C84A5DFB21" src="https://github.com/user-attachments/assets/95c71991-89e1-4ee2-86ec-18d5d6732b4d" />
+<img width="240" height="522" alt="simulator_screenshot_609932C4-FBB9-4E9D-9417-27C84A5DFB21" src="https://github.com/user-attachments/assets/de6a59e0-cadb-4c38-bb93-6a6a9ad30188" />
+<img width="240" height="522" alt="simulator_screenshot_D2FA9AE5-6E3A-44C5-A9D3-692AE4921CE1" src="https://github.com/user-attachments/assets/457a4362-fa62-47ef-9cbb-b10b91f1d56a" />
+<img width="240" height="522" alt="simulator_screenshot_2D3C89B0-7CFB-42BB-8D8B-C476D3017365" src="https://github.com/user-attachments/assets/9cd38c00-dabc-4daa-946c-9d54f937718a" />
+<img width="240" height="522" alt="simulator_screenshot_F56E2B75-BD5B-47E0-BA43-C3279CF55FE3" src="https://github.com/user-attachments/assets/1d350612-e47b-4f4d-bfac-13e1eb70ebdf" />
+
 #### Implementações
+
 * Mecanismo de busca por nome ou id do pokemon
 * Filtragem por tipo de pokemon
 * Ordenação por ordem alfabética ou id(crescente)
@@ -82,9 +89,7 @@ Foi Utilizado o BLoC como gerenciador de estado, além de estar entre os pacotes
 ## Instalação
 1. Clone o repositório
 2. Execute `flutter pub get`
-
-[//]: # (3. Configure [API keys, etc.])
-4. Execute `flutter run`
+3. Execute `flutter run`
 
 ### 5. Comandos de Execução
 #### Executar aplicação
@@ -96,7 +101,7 @@ flutter test
 ### 6. Justificativa de Pacotes
 
 #### Modular
-Além de ser um pacote recomendado ele foi extremamente útil já que ele faz o gerenciamento das dependencias e rotas do app, além disso caso o projeto crescesse ele seria um ótimo gerenciador pois consegue segregar em módulos, separando contextos, facilitando trabalho de times maiores simultanemanete e injetando modulos somente quando necessário ajudando no desempenho.
+Além de ser um pacote recomendado ele foi extremamente útil já que ele faz o gerenciamento das dependencias e rotas do app, além disso caso o projeto crescesse ele seria um ótimo gerenciador pois consegue segregar em módulos, separando contextos, facilitando trabalho de times maiores simultanemanete e injetando modulos somente quando necessário ajudando no desempenho. Mas poderia ter usado get_it e go_route no lugar.
 
 #### Bloc 
 Conforme dito no 3.4, o BLoC um pacote recomendado, separa muito bem a lógica da UI, responsabilidades e contextos bem definidas graças aos eventos. 
@@ -119,11 +124,3 @@ Foi desenvolvido a capacidade de armazenar localmente os pokemons e o pacote é 
 #### connectivity_plus
 Para decidir qual datasource iria trazer os dados precisei usar um pacote que me informasse o status de conectividade e esse me serviu bem. 
 
-#### 
-
-### Falta implementar:
-
-paginação dos itens
-
-google analytics
-criar um diagrama
