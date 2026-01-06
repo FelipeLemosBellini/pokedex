@@ -124,3 +124,20 @@ Foi desenvolvido a capacidade de armazenar localmente os pokemons e o pacote é 
 #### connectivity_plus
 Para decidir qual datasource iria trazer os dados precisei usar um pacote que me informasse o status de conectividade e esse me serviu bem. 
 
+#### flutter_native_splash
+Esse pacote foi usado para gerar a slash screen do app de forma mais rápida.
+
+### 7. Estratégia de Testes
+
+Para os testes foi utilizado os pacotes mocktail e bloc_test.
+
+Durante os testes foi pretendido testar todas as camadas ditas na arquitetura do projeto, a ideia organizacional foi espelhar as pastas do projeto para pastas e arquivos dos testes para facilitar a manutenção, além disso os testes por exemplo foram realizado para cobrir o Success e Failure pois foi usado o result_dart para melhorar o tratamento de dados de uma camada para a outra, no Failure foi checado principalmente a natureza do erro e a mensagem, já no Success houveram casos de sucesso na resposta mas não era o caso perfeito e com o caso que tudo estava correto, dados esperados nos fixtures(stubs), tipagem... 
+
+Para testar a camada de apresentação foi usado o bloc_test pois precisa de uma simulação de dispare de eventos e acredito que com outras bibliotecas seria bem mais dificil de fazer isso, por sua vez eu busquei testar a tipagem e estados, quais foram chamados e como ficou o estado final.
+
+### 8. Features Bônus
+Foi implementado o analytics do firebase dos nativos e através de uma bridge(popular MethodChannel) é invocado em uma classe de serviço bem genérica para possíveis criações de eventos, sendo necessário somente um nome e um Map para passar os dados(essa parte eu não desenvolvi bem no painel do firebase). Foi criado dois eventos:
+- Abrir tela principal
+- Escolher pokemon
+
+A ideia é rastrear o uso e os pokemons mais consultados.  
